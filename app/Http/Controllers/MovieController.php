@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Genre;
+use App\Models\FavoriteMovie;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
@@ -44,7 +48,6 @@ class MovieController extends Controller
         $genres = Genre::whereIn('GenreID', $genreIds)->pluck('Genre')->toArray();
         return view('show', ['movie' => $movie, 'genres' => $genres]);
     }
-
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -92,4 +95,20 @@ class MovieController extends Controller
     
         return response()->json(['movies' => $movies]);
     }
+ public function showMovieList()
+{
+    $movies = Movie::all();
+
+    // Check if each movie is in favorites for the authenticated user
+    $userFavorites = [];
+    if (auth()->check()) {
+        $user = auth()->user();
+        $userFavorites = $user->favoriteMovies->pluck('movie_id')->toArray();
+    }
+
+    return view('movie-list', compact('movies', 'userFavorites'));
 }
+}
+
+
+

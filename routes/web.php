@@ -6,7 +6,8 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecommenderController;
-
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ReviewController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +29,12 @@ Route::post('signup', [AuthController::class, 'signup'])->name('signup.post');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
-    // url => "word1-word2-word3"
     Route::post('/addFavoriteMovie', [ProfileController::class, 'addFavoriteMovie'])->name('addFavoriteMovie');
 });
 Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
+Route::post('/add-favorite', [FavoriteController::class, 'addFavorite'])->name('add.favorite');
+Route::post('/remove-favorite', [FavoriteController::class, 'removeFavorite'])->name('remove.favorite');
+Route::post('/movies/{movie}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+
+

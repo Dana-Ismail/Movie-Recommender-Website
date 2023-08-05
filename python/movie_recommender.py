@@ -101,11 +101,12 @@ def content_based_recommendations(user_id):
             if len(unique_recommendations) >= 3:
                 break
             if rec_movie['id'] not in user_favorite_movies:
-                unique_recommendations.append(rec_movie)
+                unique_recommendations.append(rec_movie['id']) 
 
         recommended_movies.extend(unique_recommendations)
 
     return recommended_movies
+
 app = Bottle()
 
 @app.route('/recommendations/<user_id>')
