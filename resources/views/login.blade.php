@@ -26,7 +26,7 @@
     </div>
 
     <div class="centered-content">
-      <form class="form login" action="{{ route('login.post') }}" method="POST">
+      <form class="form login" action="{{ route('login') }}" method="POST">
         @csrf
         <div class="login__field">
           <input type="email" name="email" class="login__input" placeholder="Email" required>
@@ -45,8 +45,21 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Custom Login Script -->
+<script>
+  $(document).ready(function() {
+    // Handle form submission when the login button is clicked
+    $("#login-button").click(function(event) {
+      event.preventDefault();
+
+      // Submit the login form
+      $('form.login').submit();
+    });
+  });
+</script>
 <script src="{{ url('logo.js') }}"></script>
-<script src="{{ url('login.js') }}"></script>
 </body>
 </html>

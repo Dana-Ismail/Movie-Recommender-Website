@@ -28,6 +28,28 @@ def prepare_data():
 
     return favorite_movies_df, movies_df
 
+
+# Collaborative Filtering 
+dataset = pd.read_csv('ratings_small.csv')
+user_item_matrix = dataset.pivot(index='userId', columns='movieId', values='rating').fillna(0)
+user_similarity = cosine_similarity(user_item_matrix)
+np.fill_diagonal(user_similarity, 0)  # to avoid recommending user's movies
+user_similarity_df = pd.DataFrame(user_similarity, index=user_item_matrix.index, columns=user_item_matrix.index)
+
+def get_user_recommendations(user_id, num_recommendations=5):
+    similar_users = user_similarity_df[user_id].nlargest(num_recommendations + 1).index  # +1 to exclude the user itself
+    user_movies = user_item_matrix.loc[user_id]
+    recommendations = []
+
+    for user in similar_users:
+        similar_user_movies = user_item_matrix.loc[user]
+        unseen_movies = similar_user_movies[user_movies == 0]  # filter movies the target user has not seen
+        recommendations.extend(unseen_movies.nlargest(num_recommendations).index)
+
+    return recommendations
+
+
+# Content Based 
 def build_content_based_model(movies_df, genre_weight=1.0, tags_weight=0.8, type_weight=0.75, actors_weight=0.55, directors_weight=0.4):
     # separate the feature columns based on their types
     genres = movies_df[['Genre1', 'Genre2', 'Genre3']].astype(str)
@@ -106,6 +128,16 @@ def content_based_recommendations(user_id):
         recommended_movies.extend(unique_recommendations)
 
     return recommended_movies
+
+
+# Hybrid Recommender System
+def hybrid_recommendations(user_id):
+    collaborative_recommendations = get_user_recommendations(user_id)
+    content_based_recommendations = content_based_recommendations(user_id)
+    # combine and remove duplicates
+    all_recommendations = list(set(collaborative_recommendations + content_based_recommendations))
+
+    return all_recommendations
 
 app = Bottle()
 

@@ -23,20 +23,19 @@ class FavoriteController extends Controller
         $movieId = $request->input('movie_id');
         $userId = auth()->id(); 
 
-        // Check if the movie is already in favorites for the user
+        // check if the movie is already in favorites for the user
         $isFavorite = FavoriteMovie::where('user_id', $userId)
             ->where('movie_id', $movieId)
             ->exists();
 
         if (!$isFavorite) {
-            // If movie is not in favorites, add it
+            // if not
             $favoriteMovie = new FavoriteMovie();
             $favoriteMovie->user_id = $userId;
             $favoriteMovie->movie_id = $movieId;
             $favoriteMovie->save();
             return response()->json(['success' => true]);
         } else {
-            // Return a failure response if the movie is already in favorites
             return response()->json(['success' => false]);
         }
     }
@@ -44,19 +43,17 @@ class FavoriteController extends Controller
     public function removeFavorite(Request $request)
     {
         $movieId = $request->input('movie_id');
-        $userId = auth()->id(); // Assuming you are using Laravel's built-in authentication
-
-        // Find the favorite movie for the user
+        $userId = auth()->id(); 
+        // find the favorite movie for the user
         $favoriteMovie = FavoriteMovie::where('user_id', $userId)
             ->where('movie_id', $movieId)
             ->first();
 
         if ($favoriteMovie) {
-            // If movie is in favorites, remove it
+            // if movie is in favorites, remove it
             $favoriteMovie->delete();
             return response()->json(['success' => true]);
         } else {
-            // Return a failure response if the movie is not in favorites
             return response()->json(['success' => false]);
         }
     }

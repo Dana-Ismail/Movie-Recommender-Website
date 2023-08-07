@@ -79,13 +79,8 @@
                 <h2>Add Movie by Title</h2>
                 <form action="{{ route('addFavoriteMovie') }}" method="POST">
                     @csrf
-                    <div class="preview-zone">
-                    <section class="search" role="search">
-                      <form action="#" method="get" class="search__form">
-                        <input id="basic-search" class="search__input" type="search" name="search" maxlength="100" placeholder="My Favorite Movie..." required />
-                        <button class="search__btn-submit" type="submit">Add</button>
-                      </form>
-                    </section>
+                    <input type="text" name="movie_title" placeholder="Enter movie title">
+                    <button type="submit">Add to Favorites</button>
                   </div>
                 </form>
             </div>

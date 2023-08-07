@@ -108,8 +108,7 @@ class ProfileController extends Controller
             $recommendedMovies = json_decode($response, true);
             return $recommendedMovies;
         } else {
-            // Handle the error gracefully
-            return [];
+            return ['error'];
         }
     }
 
@@ -120,46 +119,18 @@ public function addFavoriteMovieFromMoviesPage(Request $request)
     $user = Auth::user();
     $movieId = $request->input('movie_id');
 
-    // Check if the movie ID exists in the database
+    // checl if the movie ID exists in the database
     $movie = Movie::find($movieId);
 
     if ($movie) {
-        // Add the movie to the user's favorites without duplicates
+        // add the movie to the user's favorites without duplicates
         $user->favorites()->syncWithoutDetaching([$movie->id]);
-        // Redirect back to the movies page with a success message
+        // redirect back to the movies page with a success message
         return redirect()->route('movies')->with('success', 'Movie added to favorites successfully.');
     } else {
-        // Redirect back to the movies page with an error message
+        // redirect back to the movies page with an error message
         return redirect()->route('movies')->with('error', 'Movie not found. Please try again.');
     }
 }
 
 }
-        // // Define the path to the Python script
-        // $python_script = base_path('python/movie_recommender.py');
-    
-        // // Build the shell command to run the Python script
-        // $command = "python {$python_script} {$user_id}";
-    
-        // // Execute the shell command and capture the output
-        // exec($command, $output, $return_var);
-    
-        // // Check if the command executed successfully
-        // if ($return_var !== 0) {
-        //     throw new \RuntimeException("Failed to execute Python script: {$python_script}");
-        // }
-    
-        // // Get the recommended movie IDs from the Python script output
-        // $recommended_movie_ids = json_decode(implode('', $output), true);
-    
-        // // Check if the recommended_movie_ids is not null
-        // if (is_array($recommended_movie_ids) && count($recommended_movie_ids) > 0) {
-        //     // Fetch movie names from the database based on the IDs
-        //     $recommendedMovies = Movie::whereIn('id', $recommended_movie_ids)->pluck('Title')->toArray();
-        // } else {
-        //     // Set recommendedMovies as an empty array if no recommendations are returned
-        //     $recommendedMovies = [];
-        // }
-    
-        // return $recommendedMovies;
-    

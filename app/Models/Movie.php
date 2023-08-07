@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\User;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -39,7 +40,11 @@ class Movie extends Model
     {
         return $this->belongsToMany(User::class, 'favorite_movies', 'movie_id', 'user_id');
     }
-
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
     
     // public function users()
     // {

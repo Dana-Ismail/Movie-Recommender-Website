@@ -26,7 +26,7 @@
     </div>
 
     <div class="centered-content">
-      <form class="form login" action="{{ route('login.post') }}" method="POST">
+      <form class="form login" action="{{ route('signup.post') }}" method="POST">
         @csrf
         <div class="login__field">
           <input type="name" name="name" class="login__input" placeholder="Name" required>

@@ -142,7 +142,7 @@
     <h3>Reviews</h3>
     <ul>
         @foreach ($movie->reviews as $review)
-            <li>{{ $review->user->name }}: {{ $review->comment }}</li>
+            <li>{{ $review->user->name }}: {{ $review->comment }} {{ $review->sentimentScore }}</li>
         @endforeach
     </ul>
 @else
